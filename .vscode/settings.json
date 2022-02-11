@@ -4,6 +4,7 @@
         "stdint.h": "c",
         "stdint-gcc.h": "c",
         "gba_mathutil.h": "c",
-        "gba_drawing.h": "c"
+        "gba_drawing.h": "c",
+        "img_gba_pong_menu.h": "c"
     }
 }
