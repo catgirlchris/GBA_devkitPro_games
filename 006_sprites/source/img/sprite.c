@@ -1,4 +1,4 @@
-#include "img/img_gba_testTiles.h"
+#include "img/sprite.h"
 
 const unsigned int spriteTiles[64] __attribute__((aligned(4)))=
 {

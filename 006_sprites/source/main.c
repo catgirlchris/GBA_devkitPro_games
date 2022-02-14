@@ -1,132 +1,61 @@
+#include "img/sprite.h"
 #include <string.h>
 
-#include "gba_types.h"
-#include "gba_gfx.h"
-#include "gba_mathUtil.h"
-#include "gba_drawing.h"
-#include "gba_input.h"
-#include "gba_bios.h"
+typedef unsigned char      uint8;
+typedef unsigned short     uint16;
+typedef unsigned int       uint32;
 
-#include "ball.h"
-#include "paddle.h"
+typedef uint32 Tile[16];
+typedef Tile   TileBlock[256];
 
-#include "img/img_gba_testTiles.h"
+#define VIDEOMODE_0    0x0000
+#define ENABLE_OBJECTS 0x1000
+#define MAPPINGMODE_1D 0x0040
 
+#define REG_VCOUNT              (*(volatile uint16*) 0x04000006)
+#define REG_DISPLAYCONTROL      (*(volatile uint16*) 0x04000000)
 
-typedef unsigned char      u8;
-typedef unsigned short     u6;
-typedef unsigned int       u32;
-
-#define MEM_OBJ_PALETTE   ((u16*)(0x05000200))
-void UploadPaletteMem()
-{
-    memcpy(MEM_OBJ_PALETTE, spritePal, spritePalLen);
-
-}
-
-typedef u32 Tile[16];
-typedef Tile TileBlock[256];
-
-#define MEM_VRAM        ((v_u32*)0x06000000)
-#define MEM_TILE        ( (TileBlock*)MEM_VRAM )
-
-void UploadTileMem()
-{
-    memcpy(&MEM_TILE[4][1], spriteTiles, spriteTilesLen);
-}
+#define MEM_VRAM      ((volatile uint16*)0x6000000)
+#define MEM_TILE      ((TileBlock*)0x6000000 )
+#define MEM_PALETTE   ((uint16*)(0x05000200))
+#define SCREEN_W      240
+#define SCREEN_H      160
 
 typedef struct ObjectAttributes {
-    u16 attr0;
-    u16 attr1;
-    u16 attr2;
-    u16 pad;
+    uint16 attr0;
+    uint16 attr1;
+    uint16 attr2;
+    uint16 pad;
 } __attribute__((packed, aligned(4))) ObjectAttributes;
 
-/**
- * @brief Comprueba la colision entre a_paddle y a_ball.
- * 
- * @param a_paddle La pala.
- * @param a_ball La bola.
- * @return true si están colisionando y false si no.
- */
-bool check_collisions(struct paddle* a_paddle, struct ball* a_ball)
-{
-	if (a_paddle->x < a_ball->x+a_ball->size && a_paddle->x+a_paddle->width > a_ball->x)
-	{
-		if (a_paddle->y < a_ball->y+a_ball->size && a_paddle->y+a_paddle->height > a_ball->y)
-			return true;
-	}
-	return false;
-}
+#define MEM_OAM       ((volatile ObjectAttributes *)0x07000000)
 
+inline void vsync()
+{
+    while (REG_VCOUNT >= 160);
+    while (REG_VCOUNT < 160);
+}
 
 int main()
 {
-	//set GBA rendering context to MODE 0 Bitmap Rendering and no background
-	REG_DISPCNT = VIDEOMODE_0;
-	
+    memcpy(MEM_PALETTE, spritePal,  spritePalLen );
+    memcpy(&MEM_TILE[4][1], spriteTiles, spriteTilesLen);
 
-	//set up GBA registers so VBLANK interrupts are sent
-	register_vblank_isr(); 
+    volatile ObjectAttributes *spriteAttribs = &MEM_OAM[0];
 
-	//test ball
-	gba_seed_randomize(23343);
-	struct ball ball;
-	init_ball( &ball, SCREEN_W >> 1, SCREEN_H >> 1, 10, RGB(31, 31, 31));
+    spriteAttribs->attr0 = 0x2032; // 8bpp tiles, SQUARE shape, at y coord 50
+    spriteAttribs->attr1 = 0x4064; // 16x16 size when using the SQUARE shape
+    spriteAttribs->attr2 = 2;      // Start at the first tile in tile
 
-	struct paddle paddle1;
-	init_paddle( &paddle1, 10, 60, 16, 16, RGB(0, 0, 31));
+    REG_DISPLAYCONTROL =  VIDEOMODE_0 | ENABLE_OBJECTS | MAPPINGMODE_1D;
 
-	struct paddle paddle2;
-	init_paddle( &paddle2, SCREEN_W - 18, 60, 16, 16, RGB(31, 0, 0));
-	//init_paddle( &paddle2, SCREEN_W - 18, 0, 16, SCREEN_H, RGB(31, 0, 0));
+    int x = 0;
+    while(1)
+    {
+        vsync();
+        x = (x+1) % (SCREEN_W);
+        spriteAttribs->attr1 = 0x4000 | (0x1FF & x);
 
-	s32 paddle1_dir = 0;
-
-	while(1)
-	{
-		//wait until GBA stops drawing to the screen, nothing should be executing until it finishes.
-		vblank_interrupt_wait();
-		poll_keys();
-
-		// remove draw from last frame
-		clear_ball(&ball);
-		clear_paddle(&paddle1);
-		clear_paddle(&paddle2);
-
-		//update data
-		move_ball(&ball);
-		
-		
-		// check collisions on both paddles
-		if (check_collisions(&paddle1, &ball))
-			bounce_ball(&ball);
-		if (check_collisions(&paddle2, &ball))
-			bounce_ball(&ball);
-		
-		move_paddle(&paddle2, (abs(ball.yDir)/ball.yDir)*1);
-
-		paddle1_dir = 0;
-		if (key_down(DOWN))
-		{
-			move_paddle(&paddle1, 2);
-			paddle1_dir = 1;
-		}
-		else if (key_down(UP))
-		{
-			move_paddle(&paddle1, -2);
-			paddle1_dir = -1;
-		}
-		if (key_down(A))
-		{
-			move_paddle(&paddle1, paddle1_dir*70);
-		}
-
-		//draw
-		//draw_ball(&ball);
-		//draw_paddle(&paddle1);
-		//draw_paddle(&paddle2);
-	}
-
-	return 0;
+    }
+    return 0;
 }

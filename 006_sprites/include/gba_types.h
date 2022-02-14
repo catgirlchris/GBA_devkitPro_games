@@ -25,4 +25,7 @@ typedef volatile uint8_t		v_u8;	typedef volatile int8_t			v_s8;
 typedef volatile uint16_t		v_u16;	typedef volatile int16_t		v_s16;
 typedef volatile uint32_t		v_u32;	typedef volatile int32_t		v_s32;
 
+typedef u32 Tile[16];
+typedef Tile TileBlock[256];
+
 #endif //__GBA_TYPES_H__

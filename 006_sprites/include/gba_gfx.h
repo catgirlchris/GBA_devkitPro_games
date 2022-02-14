@@ -22,6 +22,10 @@
 #define BGMODE_2	0x0400  /* Background Mode 2 */
 #define BGMODE_3	0x0800  /* Background Mode 3 */
 
+//Other fields
+#define ENABLE_OBJECTS 0x1000
+#define MAPPINGMODE_1D 0x0040
+
 /* vcount is used for testing for vertical blank */
 #define REG_VCOUNT (*(v_u16*)(REG_BASE + 0x06))
 

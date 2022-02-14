@@ -4,6 +4,8 @@
 
 #ifndef __GBA_REG_H__
 #define __GBA_REG_H__
+
+#include "gba_types.h"
 /*
 * Define the Base Address for External (on-board) Work RAM (WRAM)
 * This is 256K in Size
@@ -20,15 +22,22 @@
 *
 */
 #define REG_BASE 0x04000000
+
+#define MEM_PALETTE   ((u16*)(0x05000200))
+
 /*
 * Define the Base Address for Video RAM (VRAM)
 * This is 96K in Size
 */
 #define VRAM 0x06000000
+#define MEM_TILE      ((TileBlock*)0x6000000 )
+
 /*
 * Define the Base Address for Cart Save RAM (VRAM)
 * This is 64K (Max) in Size
 */
 #define	SRAM		0x0E000000
+
+
 
 #endif //__GBA_REG_H__
