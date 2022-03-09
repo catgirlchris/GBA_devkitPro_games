@@ -33,3 +33,19 @@ s32 abs(s32 a_val)
 	s32 mask = a_val >> 31;
 	return (a_val ^ mask) - mask;
 }
+
+s32 min(s32 n1, s32 n2)
+{
+	if (n1 <= n2)
+		return n1;
+	else
+		return n2;
+}
+
+s32 max(s32 n1, s32 n2)
+{
+	if (n1 >= n2)
+		return n1;
+	else
+		return n2;
+}

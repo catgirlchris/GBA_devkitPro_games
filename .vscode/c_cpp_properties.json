@@ -1,0 +1,25 @@
+{
+    "configurations": [
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceFolder}/006_sprites/**",
+                "C:/Users/chris/AppData/Local/Packages/CanonicalGroupLimited.UbuntuonWindows_79rhkp1fndgsc/LocalState",
+                "\\wsl$/Ubuntu/opt/devkitpro/libgba/**",
+                "\\wsl$/Ubuntu/opt/devkitpro/libtonc/**",
+                "/opt/devkitpro/libtonc/**",
+                "/opt/devkitpro/libgba/**"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE",
+                "_UNICODE"
+            ],
+            "compilerPath": "D:\\Compiladores\\MinGW-W64\\mingw64\\bin\\gcc.exe",
+            "cStandard": "gnu17",
+            "cppStandard": "gnu++14",
+            "intelliSenseMode": "windows-gcc-x64"
+        }
+    ],
+    "version": 4
+}

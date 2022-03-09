@@ -7,6 +7,20 @@
         "gba_drawing.h": "c",
         "img_gba_pong_menu.h": "c",
         "sprite.h": "c",
-        "gba_types.h": "c"
+        "gba_types.h": "c",
+        "tonc_memmap.h": "c",
+        "tonc.h": "c",
+        "gba_gfx.h": "c",
+        "gba_reg.h": "c",
+        "ball.h": "c",
+        "ball_sprite.h": "c",
+        "tonc_oam.h": "c",
+        "string.h": "c",
+        "type_traits": "cpp",
+        "gba_oam.h": "c",
+        "typeinfo": "cpp",
+        "paddle.h": "c",
+        "limits": "c",
+        "*.tcc": "c"
     }
 }

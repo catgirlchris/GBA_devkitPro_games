@@ -9,12 +9,16 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#define ALIGN4		__attribute__((aligned(4)))
+#define INLINE static inline
+
 //\===========================================================================================================
 //\TYPEDEF our variables to indicate clearly what level of bit precision each variable has
 //\===========================================================================================================
 typedef uint8_t		u8;		typedef int8_t		s8;
 typedef uint16_t	u16;	typedef int16_t		s16;
 typedef uint32_t	u32;	typedef int32_t		s32;
+
 //\===========================================================================================================
 //\ Volatile variables
 //\ The volatile key word indicates to the compiler, and the programmer. That these variables may have their values
@@ -27,5 +31,14 @@ typedef volatile uint32_t		v_u32;	typedef volatile int32_t		v_s32;
 
 typedef u32 Tile[16];
 typedef Tile TileBlock[256];
+
+typedef struct object_attributes_t {
+    u16 attr0;
+    u16 attr1;
+    u16 attr2;
+    u16 pad;
+} ALIGN4 object_attributes_t;
+
+
 
 #endif //__GBA_TYPES_H__
