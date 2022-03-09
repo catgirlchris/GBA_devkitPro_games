@@ -1,14 +1,13 @@
-#include "gba_drawing.h"
 #include "gba_gfx.h"
 #include "gba_input.h"
-#include "gba_types.h"
 #include "gba_mathUtil.h"
-
+#include "gba_reg.h"
 #include "ball.h"
 #include "paddle.h"
 
 #include <string.h>
-#include <stdio.h>
+//#include <tonc_input.h>
+#include <tonc_types.h>
 
 #include "img/ball_sprite.h"
 #include "img/ball_sprite.c"
@@ -17,9 +16,10 @@
 #include "img/pong_paddle.h"
 #include "img/pong_paddle.c"
 
-#define MEM_VRAM      ((v_u16*)0x6000000)
+#define _MEM_VRAM      ((v_u16*)0x6000000)
 #define MEM_TILE      ((TileBlock*)0x6000000 )
 #define MEM_PALETTE   ((u16*)(0x05000200))
+
 
 bool check_collisions(struct paddle* paddle, struct ball* ball)
 {
@@ -81,7 +81,7 @@ int main()
 
 
 
-    REG_DISPCNT =  VIDEOMODE_0 | ENABLE_OBJECTS | MAPPINGMODE_1D;
+    _REG_DISPCNT =  VIDEOMODE_0 | ENABLE_OBJECTS | MAPPINGMODE_1D;
 
     
 
@@ -130,15 +130,15 @@ int main()
             if ((paddle.y >= ball.y+ball.size) /*&& (ball.y+ball.size+ball.y_direction > paddle.y)*/)
             {
                 if (ball.y_collision_immunity_countdown == 0)
-                    bounce_ball_y(&ball, 1+abs(paddle.y_direction)*1);
-                ball.y = min(ball.y, paddle.y-ball.size - paddle.speed -ball.y_speed /*- 4*/);
+                    bounce_ball_y(&ball, 1+gba_abs(paddle.y_direction)*1);
+                ball.y = gba_min(ball.y, paddle.y-ball.size - paddle.speed -ball.y_speed /*- 4*/);
                 ball.y_collision_immunity_countdown = 10;
             } /* if paddle_bot is above */
             else if (paddle.y+paddle.height <= ball.y)
             {
                 if (ball.y_collision_immunity_countdown == 0)
-                    bounce_ball_y(&ball, 1+abs(paddle.y_direction)*1);
-                ball.y = max(ball.y, paddle.y + paddle.height + paddle.speed + ball.y_speed /*+ 4*/);
+                    bounce_ball_y(&ball, 1+gba_abs(paddle.y_direction)*1);
+                ball.y = gba_max(ball.y, paddle.y + paddle.height + paddle.speed + ball.y_speed /*+ 4*/);
                 ball.y_collision_immunity_countdown = 10;
             }
             else
@@ -161,7 +161,6 @@ int main()
         draw_ball(&ball);
         draw_paddle(&paddle);
         draw_paddle(&paddle_enemy);
-        printf("hello world");
     }
 
     return 0;
