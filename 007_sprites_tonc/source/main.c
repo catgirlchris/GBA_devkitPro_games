@@ -13,10 +13,6 @@
 #include "img/pong_paddle.h"
 #include "img/pong_paddle.c"
 
-//#define _MEM_VRAM      ((v_u16*)0x6000000)
-//#define MEM_TILE      ((TileBlock*)0x6000000 )
-//#define MEM_PALETTE   ((u16*)(0x05000200))
-
 
 bool check_collisions(struct paddle* paddle, struct ball* ball)
 {

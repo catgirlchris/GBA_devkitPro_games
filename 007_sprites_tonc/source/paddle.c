@@ -1,6 +1,6 @@
 #include "paddle.h"
 
-void init_paddle(struct paddle* paddle, s32 x, s32 y, s32 width, s32 height, s32 speed, volatile object_attributes_t *obj_attributes)
+void init_paddle(struct paddle* paddle, s32 x, s32 y, s32 width, s32 height, s32 speed, volatile OBJ_ATTR *obj_attributes)
 {
 	paddle->x = x;
 	paddle->y = y;

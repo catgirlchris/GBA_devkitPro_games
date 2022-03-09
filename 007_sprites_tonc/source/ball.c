@@ -14,7 +14,7 @@ void start_ball(struct ball* ball)
 		ball->y_direction = qran_range(-1, 2);
 }
 
-void init_ball(struct ball* ball, s32 x, s32 y, s32 size, s32 speed, volatile struct object_attributes_t *obj_attributes)
+void init_ball(struct ball* ball, s32 x, s32 y, s32 size, s32 speed, volatile struct OBJ_ATTR *obj_attributes)
 {
 	ball->x = x;
 	ball->y = y;

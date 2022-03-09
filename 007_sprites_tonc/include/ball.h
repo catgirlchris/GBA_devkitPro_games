@@ -13,12 +13,12 @@
 struct ball
 {
 	s32 x, y, x_direction, y_direction, size, x_speed, y_speed, default_speed, n_bounces, bounce_speedup, x_collision_immunity_countdown, y_collision_immunity_countdown;
-	volatile object_attributes_t *obj_attributes;
+	volatile OBJ_ATTR *obj_attributes;
 };
 
 
 void start_ball(struct ball* ball);
-void init_ball(struct ball* ball, s32 x, s32 y, s32 size, s32 speed, volatile object_attributes_t *obj_attributes);
+void init_ball(struct ball* ball, s32 x, s32 y, s32 size, s32 speed, volatile OBJ_ATTR *obj_attributes);
 
 void move_ball(struct ball* ball);
 void bounce_ball(struct ball* ball);

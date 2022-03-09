@@ -3,16 +3,16 @@
 
 #include <tonc_types.h>
 #include <tonc_video.h>
-#include "gba_oam.h"
+//#include "gba_oam.h"
 
 struct paddle
 {
 	s32 x, y, width, height, y_direction, speed;
 
-	volatile object_attributes_t *obj_attributes;
+	volatile OBJ_ATTR *obj_attributes;
 };
 
-void init_paddle(struct paddle* paddle, s32 x, s32 y, s32 width, s32 height, s32 speed, volatile object_attributes_t *obj_attributes);
+void init_paddle(struct paddle* paddle, s32 x, s32 y, s32 width, s32 height, s32 speed, volatile OBJ_ATTR *obj_attributes);
 
 void move_paddle_by_value(struct paddle* paddle, s32 val);
 
