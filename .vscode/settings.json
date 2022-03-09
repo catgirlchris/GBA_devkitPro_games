@@ -21,6 +21,7 @@
         "typeinfo": "cpp",
         "paddle.h": "c",
         "limits": "c",
-        "*.tcc": "c"
+        "*.tcc": "c",
+        "tonc_types.h": "c"
     }
 }
