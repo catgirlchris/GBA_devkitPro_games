@@ -1,7 +1,6 @@
 #ifndef __GBA_BIOS_H__
 #define __GBA_BIOS_H__
 
-#include "gba_reg.h"
 #include "gba_macros.h"
 #include <tonc_types.h>
 

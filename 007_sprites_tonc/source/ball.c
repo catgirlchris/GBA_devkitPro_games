@@ -9,9 +9,9 @@ void start_ball(struct ball* ball)
 	ball->x_collision_immunity_countdown = 0;
 	ball->y_collision_immunity_countdown = 0;
 	while ( ball->x_direction == 0)
-		ball->x_direction = gba_generate_random_range(-1, 2);
+		ball->x_direction = qran_range(-1, 2);
 	while ( ball->y_direction == 0)
-		ball->y_direction = gba_generate_random_range(-1, 2);
+		ball->y_direction = qran_range(-1, 2);
 }
 
 void init_ball(struct ball* ball, s32 x, s32 y, s32 size, s32 speed, volatile struct object_attributes_t *obj_attributes)
@@ -92,7 +92,7 @@ void bounce_ball_test(struct ball* ball, bool flip_x_direction, bool flip_y_dire
 void bounce_ball_y(struct ball* ball, s32 y_additional_speed)
 {
 	ball->n_bounces++;
-	ball->y_speed += gba_abs(y_additional_speed);
+	ball->y_speed += ABS(y_additional_speed);
 	ball->y_direction *= -1;
 }
 

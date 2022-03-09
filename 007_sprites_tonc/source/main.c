@@ -3,9 +3,6 @@
 #include <tonc_input.h>
 #include <tonc_types.h>
 
-#include "gba_mathUtil.h"
-#include "gba_reg.h"
-
 #include "ball.h"
 #include "paddle.h"
 
@@ -16,9 +13,9 @@
 #include "img/pong_paddle.h"
 #include "img/pong_paddle.c"
 
-#define _MEM_VRAM      ((v_u16*)0x6000000)
-#define MEM_TILE      ((TileBlock*)0x6000000 )
-#define MEM_PALETTE   ((u16*)(0x05000200))
+//#define _MEM_VRAM      ((v_u16*)0x6000000)
+//#define MEM_TILE      ((TileBlock*)0x6000000 )
+//#define MEM_PALETTE   ((u16*)(0x05000200))
 
 
 bool check_collisions(struct paddle* paddle, struct ball* ball)
@@ -61,22 +58,20 @@ void clamp_left(struct paddle* paddle, struct ball* ball)
 
 int main()
 {
-    memcpy(MEM_PALETTE, pong_paddlePal,  pong_paddlePalLen );
-    memcpy(&MEM_TILE[4][1], ball_spriteTiles, ball_spriteTilesLen);
+    memcpy(pal_obj_mem, pong_paddlePal,  pong_paddlePalLen );
+    memcpy(&tile8_mem[4][1], ball_spriteTiles, ball_spriteTilesLen);
 
-    //memcpy(MEM_PALETTE, paddle_spritePal,  paddle_spritePalLen );
-    memcpy(&MEM_TILE[4][5], pong_paddleTiles, pong_paddleTilesLen);
-
-    gba_seed_randomize(23343);
+    //memcpy(pal_obj_mem, paddle_spritePal,  paddle_spritePalLen );
+    memcpy(&tile8_mem[4][5], pong_paddleTiles, pong_paddleTilesLen);
 
     struct ball ball;
-    init_ball(&ball, SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1, 8, 1, &OAM[0]);
+    init_ball(&ball, SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1, 8, 1, &oam_mem[0]);
 
     struct paddle paddle;
-    init_paddle(&paddle, 16, SCREEN_HEIGHT >> 1, 8, 32, 3, &OAM[1]);
+    init_paddle(&paddle, 16, SCREEN_HEIGHT >> 1, 8, 32, 3, &oam_mem[1]);
 
     struct paddle paddle_enemy;
-    init_paddle(&paddle_enemy, SCREEN_WIDTH - 16 - 8, ball.y, 8, 32, 3, &OAM[2]);
+    init_paddle(&paddle_enemy, SCREEN_WIDTH - 16 - 8, ball.y, 8, 32, 3, &oam_mem[2]);
     paddle_enemy.obj_attributes->attr1 |= 0x3000;
 
 
@@ -130,15 +125,15 @@ int main()
             if ((paddle.y >= ball.y+ball.size) /*&& (ball.y+ball.size+ball.y_direction > paddle.y)*/)
             {
                 if (ball.y_collision_immunity_countdown == 0)
-                    bounce_ball_y(&ball, 1+gba_abs(paddle.y_direction)*1);
-                ball.y = gba_min(ball.y, paddle.y-ball.size - paddle.speed -ball.y_speed /*- 4*/);
+                    bounce_ball_y(&ball, 1+ABS(paddle.y_direction)*1);
+                ball.y = MIN(ball.y, paddle.y-ball.size - paddle.speed -ball.y_speed /*- 4*/);
                 ball.y_collision_immunity_countdown = 10;
             } /* if paddle_bot is above */
             else if (paddle.y+paddle.height <= ball.y)
             {
                 if (ball.y_collision_immunity_countdown == 0)
-                    bounce_ball_y(&ball, 1+gba_abs(paddle.y_direction)*1);
-                ball.y = gba_max(ball.y, paddle.y + paddle.height + paddle.speed + ball.y_speed /*+ 4*/);
+                    bounce_ball_y(&ball, 1+ABS(paddle.y_direction)*1);
+                ball.y = MAX(ball.y, paddle.y + paddle.height + paddle.speed + ball.y_speed /*+ 4*/);
                 ball.y_collision_immunity_countdown = 10;
             }
             else

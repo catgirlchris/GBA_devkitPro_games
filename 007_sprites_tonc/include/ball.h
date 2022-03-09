@@ -1,11 +1,13 @@
 #ifndef __PONG_BALL_H__
 #define __PONG_BALL_H__
 
-//#include "gba_gfx.h"
 #include <tonc_video.h>
 #include <tonc_types.h>
+#include <tonc_core.h>
+#include <tonc_math.h>
+
 #include "paddle.h"
-#include "gba_mathUtil.h"
+//#include "gba_mathUtil.h"
 
 
 struct ball
