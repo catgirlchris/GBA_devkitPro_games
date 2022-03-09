@@ -22,9 +22,9 @@ void move_paddle_by_value(struct paddle* paddle, s32 val)
 	{
 		paddle->y = 0;
 	}
-	if (paddle->y > SCREEN_H - paddle->height)
+	if (paddle->y > SCREEN_HEIGHT - paddle->height)
 	{
-		paddle->y = SCREEN_H - paddle->height;
+		paddle->y = SCREEN_HEIGHT - paddle->height;
 	}
 }
 

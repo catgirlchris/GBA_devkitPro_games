@@ -1,7 +1,8 @@
 #ifndef __PONG_BALL_H__
 #define __PONG_BALL_H__
 
-#include "gba_gfx.h"
+//#include "gba_gfx.h"
+#include <tonc_video.h>
 #include <tonc_types.h>
 #include "paddle.h"
 #include "gba_mathUtil.h"

@@ -44,17 +44,17 @@ void move_ball(struct ball* ball)
 		ball->y = 0;
 		bounce_ball_y(ball, 0);
 	}
-	if ( ball->y > SCREEN_H - ball->size)
+	if ( ball->y > SCREEN_HEIGHT - ball->size)
 	{
-		ball->y = SCREEN_H - ball->size;
+		ball->y = SCREEN_HEIGHT - ball->size;
 		bounce_ball_y(ball, 0);
 	}
 
 	ball->x += ball->x_speed*ball->x_direction;
-	if ( ball->x < 0 || ball->x > SCREEN_W - ball->size)
+	if ( ball->x < 0 || ball->x > SCREEN_WIDTH - ball->size)
 	{
-		ball->x = (SCREEN_W >> 1) - (ball->size >> 1);
-		ball->y = (SCREEN_H >> 1) - (ball->size >> 1);
+		ball->x = (SCREEN_WIDTH >> 1) - (ball->size >> 1);
+		ball->y = (SCREEN_HEIGHT >> 1) - (ball->size >> 1);
 		ball->x_direction = 0; ball->y_direction = 0;
 		start_ball(ball);
 	}

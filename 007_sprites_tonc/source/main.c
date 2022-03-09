@@ -1,13 +1,13 @@
-#include "gba_gfx.h"
-#include "gba_input.h"
+#include <string.h>
+#include <tonc_video.h>
+#include <tonc_input.h>
+#include <tonc_types.h>
+
 #include "gba_mathUtil.h"
 #include "gba_reg.h"
+
 #include "ball.h"
 #include "paddle.h"
-
-#include <string.h>
-//#include <tonc_input.h>
-#include <tonc_types.h>
 
 #include "img/ball_sprite.h"
 #include "img/ball_sprite.c"
@@ -70,39 +70,39 @@ int main()
     gba_seed_randomize(23343);
 
     struct ball ball;
-    init_ball(&ball, SCREEN_W >> 1, SCREEN_H >> 1, 8, 1, &OAM[0]);
+    init_ball(&ball, SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1, 8, 1, &OAM[0]);
 
     struct paddle paddle;
-    init_paddle(&paddle, 16, SCREEN_H >> 1, 8, 32, 3, &OAM[1]);
+    init_paddle(&paddle, 16, SCREEN_HEIGHT >> 1, 8, 32, 3, &OAM[1]);
 
     struct paddle paddle_enemy;
-    init_paddle(&paddle_enemy, SCREEN_W - 16 - 8, ball.y, 8, 32, 3, &OAM[2]);
+    init_paddle(&paddle_enemy, SCREEN_WIDTH - 16 - 8, ball.y, 8, 32, 3, &OAM[2]);
     paddle_enemy.obj_attributes->attr1 |= 0x3000;
 
 
 
-    _REG_DISPCNT =  VIDEOMODE_0 | ENABLE_OBJECTS | MAPPINGMODE_1D;
+    REG_DISPCNT =  DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D;
 
     
 
     while(1)
     {
         // wait vblank
-        vsync();
+        vid_vsync();
 
-        poll_keys();
+        key_poll();
 
         // update
         move_ball(&ball);
 
         paddle.y_direction = 0;
         paddle.speed = 0;
-        if (key_down(DOWN))
+        if (key_is_down(KEY_DOWN))
         {
             paddle.y_direction = 1;
             paddle.speed = 3;
         }
-        else if (key_down(UP))
+        else if (key_is_down(KEY_UP))
         {
             paddle.y_direction = -1;
             paddle.speed = 3;

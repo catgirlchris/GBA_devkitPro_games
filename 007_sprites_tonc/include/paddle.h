@@ -2,8 +2,8 @@
 #define __PONG_PADDLE_H__
 
 #include <tonc_types.h>
+#include <tonc_video.h>
 #include "gba_oam.h"
-#include "ball.h"
 
 struct paddle
 {
