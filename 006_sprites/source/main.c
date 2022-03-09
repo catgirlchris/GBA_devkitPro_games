@@ -8,8 +8,6 @@
 #include "paddle.h"
 
 #include <string.h>
-#include <gba.h>
-
 
 #include "img/ball_sprite.h"
 #include "img/ball_sprite.c"
@@ -84,11 +82,7 @@ int main()
 
     REG_DISPCNT =  VIDEOMODE_0 | ENABLE_OBJECTS | MAPPINGMODE_1D;
 
-    // Init BG 0 for text on screen entries.
-	tte_init_se_default(0, BG_CBB(0)|BG_SBB(31));
-
-	tte_write("#{P:72,64}");		// Goto (72, 64).
-	tte_write("Hello World!");		// Print "Hello world!"
+    
 
     while(1)
     {
@@ -166,6 +160,7 @@ int main()
         draw_ball(&ball);
         draw_paddle(&paddle);
         draw_paddle(&paddle_enemy);
+        printf("hello world");
     }
 
     return 0;
