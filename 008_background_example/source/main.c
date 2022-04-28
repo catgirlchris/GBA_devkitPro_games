@@ -10,30 +10,82 @@
 #include "img/pong_paddle.h"
 #include "img/pong_paddle.c"
 
+#define brinPalLen 6
+const unsigned short brinPal[3]=
+{
+	0xFFF5, 0x077, 0x782
+};
+
+#define brinTilesLen 32*2*2
+const unsigned short brinTiles[32*2]=
+{
+    // tile 0
+	0x0000, 0x0000, 
+    0x0000, 0x0000,
+    0x0000, 0x0000, 
+    0x0000, 0x0000,
+    0x0000, 0x0000,
+    0x0000, 0x0000,
+    0x0000, 0x0000,
+    0x0000, 0x0000,
+
+    // tile 1
+    0x1111, 0x1111, 
+    0x1111, 0x1111, 
+    0x1111, 0x1111, 
+    0x1111, 0x1111, 
+    0x1111, 0x1111, 
+    0x2222, 0x2222,
+    0x1111, 0x1111,
+    0x1111, 0x1111,
+};
+
+#define brinMapLen 4096
+const unsigned short brinMap[2048]=
+{
+    // map row 0
+	0x0001,0x0001,0x0001,0x0001,0x0000,0x0000,0x0000,0x0000,
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+
+    // map row 1
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+	0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,0x0000,
+};
 
 
 int main()
 {
-    memcpy(pal_obj_mem, pong_paddlePal,  pong_paddlePalLen );
-    memcpy(&tile8_mem[4][1], ball_spriteTiles, ball_spriteTilesLen);
+    // Load palette
+	memcpy(pal_bg_mem, brinPal, brinPalLen);
+	// Load tiles into CBB 0
+	memcpy(&tile_mem[0][0], brinTiles, brinTilesLen);
+	// Load map into SBB 30
+	memcpy(&se_mem[30][0], brinMap, brinMapLen);
 
-    //memcpy(pal_obj_mem, paddle_spritePal,  paddle_spritePalLen );
-    memcpy(&tile8_mem[4][5], pong_paddleTiles, pong_paddleTilesLen);
-
-
-    REG_DISPCNT =  DCNT_MODE0 | DCNT_OBJ | DCNT_OBJ_1D;
+    // set up BG0 for a 4bpp 64x32t map, using
+	//   using charblock 0 and screenblock 31
+	REG_BG0CNT= BG_CBB(0) | BG_SBB(30) | BG_4BPP | BG_REG_64x32;
+	REG_DISPCNT= DCNT_MODE0 | DCNT_BG0;
 
     
 
-    while(1)
-    {
-        // wait vblank
-        vid_vsync();
+    // Scroll around some
+	int x= 0, y= 0;
+	while(1)
+	{
+		vid_vsync();
+		key_poll();
 
-        key_poll();
+		x += key_tri_horz();
+		y += key_tri_vert();
 
-        // update
-    }
+		REG_BG0HOFS= x;
+		REG_BG0VOFS= y;
+	}
 
     return 0;
 }
