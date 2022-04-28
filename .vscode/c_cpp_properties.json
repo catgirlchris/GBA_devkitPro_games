@@ -1,0 +1,30 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/include",
+                "/usr/local/include",
+                "${workspaceFolder}/008_background_example/include",
+                "${workspaceFolder}/008_background_example/source",
+                "/opt/devkitpro/libtonc/**",
+                "/opt/devkitpro/libgba/**"
+            ],
+            "defines": [],
+            "intelliSenseMode": "linux-gcc-x64",
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include",
+                    "${workspaceFolder}/008_background_example/include",
+                    "${workspaceFolder}/008_background_example/source",
+                    "/opt/devkitpro/libtonc/**",
+                    "/opt/devkitpro/libgba/**"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ],
+    "version": 4
+}
