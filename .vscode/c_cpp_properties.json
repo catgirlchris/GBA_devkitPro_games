@@ -5,19 +5,19 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceFolder}/007_sprites_tonc/include",
-                "${workspaceFolder}/007_sprites_tonc/source",
+                "${workspaceFolder}/008_background_example/source",
+                "${workspaceFolder}/008_background_example/include",
                 "/opt/devkitpro/libtonc/**",
                 "/opt/devkitpro/libgba/**"
             ],
             "defines": [],
-            "intelliSenseMode": "clang-x64",
+            "intelliSenseMode": "gcc-x64",
             "browse": {
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
-                    "${workspaceFolder}/007_sprites_tonc/include",
-                    "${workspaceFolder}/007_sprites_tonc/source",
+                    "${workspaceFolder}/008_background_example/include",
+                    "${workspaceFolder}/008_background_example/source",
                     "/opt/devkitpro/libtonc/**",
                     "/opt/devkitpro/libgba/**"
                 ],
