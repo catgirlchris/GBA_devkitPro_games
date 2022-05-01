@@ -22,6 +22,7 @@
         "paddle.h": "c",
         "limits": "c",
         "*.tcc": "c",
-        "tonc_types.h": "c"
+        "tonc_types.h": "c",
+        "tonc_input.h": "c"
     }
 }
