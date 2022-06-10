@@ -1,19 +1,26 @@
 #include <string.h>
 #include <tonc_video.h>
 #include <tonc_input.h>
+
 #include <tonc_types.h>
 
-#include "img/ball_sprite.h"
-#include "img/ball_sprite.c"
-#include "img/paddle_sprite.h"
-#include "img/paddle_sprite.c"
-#include "img/pong_paddle.h"
-#include "img/pong_paddle.c"
+#include "img/pueblecito_1.h"
+#include "img/pueblecito_1.c"
+#include "img/prueba.c"
 
-#define brinPalLen 8
-const unsigned short brinPal[4]=
-{
-	0xFFF5, 0x077, 0x782, 0x171f
+
+
+#define brinPalLen 128
+const unsigned short brinPal[ 64 ] = {
+	0x1485,0x20c7,0x314c,0x35b2,0x3e55,0x312d,0x45cf,0x5ab3,
+	0x6b78,0x7fff,0x108d,0x18f6,0x193d,0x25fe,0x1895,0x1cfd,
+	0x0dbf,0x0a5e,0x171f,0x20cf,0x1d13,0x1db9,0x265c,0x2aff,
+	0x10e9,0x198c,0x22b4,0x279a,0x43ff,0x2562,0x3244,0x3ae3,
+	0x3772,0x3779,0x1cc6,0x2526,0x31ea,0x42b2,0x4af6,0x3161,
+	0x4621,0x4ea1,0x5f86,0x73f1,0x28c6,0x3929,0x5989,0x7269,
+	0x7f51,0x1ca8,0x38ed,0x5572,0x7a15,0x76bd,0x28ee,0x3534,
+	0x3d99,0x4e1d,0x2c70,0x2898,0x3d3e,0x421e,0x4a9f,0x5b3f,
+
 };
 
 #define brinTilesLen 32*2*2
@@ -157,20 +164,23 @@ void fill_background()
 int main()
 {
     // Load palette
-	memcpy(pal_bg_mem, brinPal, brinPalLen);
+	//memcpy(pal_bg_mem, pueblecito_1Pal, pueblecito_1PalLen);
+	memcpy(pal_bg_mem, pueblecito_1_pal, pueblecito_1_pal_len);
 	// Load tiles into CBB 0
-	memcpy(&tile_mem[0][0], brinTiles, brinTilesLen);
+	memcpy(&tile_mem[0][0], pueblecito_1Tiles, pueblecito_1TilesLen);
+	memcpy(&tile_mem[1][0], pueblecito_1_tiles, pueblecito_1_tiles_len);
 	// Load map into SBB 30
-	memcpy(&se_mem[30][0], brinMap, brinMapLen);
+	//memcpy(&se_mem[30][0], pueblecito_1Map, pueblecito_1MapLen);
+	memcpy(&se_mem[30][0], pueblecito_1_map, pueblecito_1_map_len);
 
 	//fill_background();
 
-    // set up BG0 for a 4bpp 64x32t map, using
+    // set up BG0 for a 8bpp 32x32t map, using
 	//   using charblock 0 and screenblock 31
-	REG_BG0CNT= BG_CBB(0) | BG_SBB(30) | BG_4BPP | BG_REG_64x32;
+	REG_BG0CNT= BG_CBB(1) | BG_SBB(30) | BG_8BPP | BG_REG_32x32;
 	REG_DISPCNT= DCNT_MODE0 | DCNT_BG0;
 
-    
+    int a = 0;
 
     // Scroll around some
 	int x= 0, y= 0;

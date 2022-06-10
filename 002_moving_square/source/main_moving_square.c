@@ -21,7 +21,8 @@ inline void vsync()
 
 inline uint16 MakeCol(uint8 red, uint8 green, uint8 blue)
 {
-    return (red & 0x1F) | (green & 0x1F) << 5 | (blue & 0x1F) << 10;
+    //return (red & 0x1F) | (green & 0x1F) << 5 | (blue & 0x1F) << 10;
+	return (((red >> 3) & 31) | (((green >> 3) & 31) << 5) | (((blue >> 3) & 31) << 10));
 }
 
 void drawRect(int left, int top, int width, int height, uint16 clr)
@@ -57,7 +58,7 @@ int main()
 			drawRect(last % SCREEN_W, (last / SCREEN_W) * 10, 10, 10, MakeCol(0, 0, 0));
 		}
 
-		drawRect(x % SCREEN_W, (x / SCREEN_W) * 10, 10, 10, MakeCol(31, 31, 31));
+		drawRect(x % SCREEN_W, (x / SCREEN_W) * 10, 10, 10, MakeCol(249, 194, 43));
 		x += 10;
 	}
 

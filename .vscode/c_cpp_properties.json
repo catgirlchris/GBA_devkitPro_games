@@ -5,8 +5,10 @@
             "includePath": [
                 "/usr/include",
                 "/usr/local/include",
-                "${workspaceFolder}/008_background_example/include",
-                "${workspaceFolder}/008_background_example/source",
+                "${workspaceFolder}/009_image_integration/include",
+                "${workspaceFolder}/009_image_integration/source",
+                "${workspaceFolder}/009_image_integration/include/img",
+                "${workspaceFolder}/009_image_integration/source/img",
                 "/opt/devkitpro/libtonc/**",
                 "/opt/devkitpro/libgba/**"
             ],
@@ -16,8 +18,8 @@
                 "path": [
                     "/usr/include",
                     "/usr/local/include",
-                    "${workspaceFolder}/008_background_example/include",
-                    "${workspaceFolder}/008_background_example/source",
+                    "${workspaceFolder}/009_image_integration/include/*",
+                    "${workspaceFolder}/009_image_integration/source/*",
                     "/opt/devkitpro/libtonc/**",
                     "/opt/devkitpro/libgba/**"
                 ],

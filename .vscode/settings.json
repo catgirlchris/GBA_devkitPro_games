@@ -23,6 +23,9 @@
         "limits": "c",
         "*.tcc": "c",
         "tonc_types.h": "c",
-        "tonc_input.h": "c"
+        "tonc_input.h": "c",
+        "tonc_video.h": "c",
+        "argp.h": "c",
+        "pueblecito_1.h": "c"
     }
 }
