@@ -1,7 +1,15 @@
+from genericpath import isfile
 import tkinter as tk
 import tkinter.ttk as ttk
 import ttkthemes
 from turtle import bgcolor, left
+import os
+
+def get_img_files_from_dir(path : str) -> list:
+    # Recoge ficheros png (no directorios por ahora) con profundidad 0
+    # TODO profundidad, solo imagenes, etc
+    files = [f for f in os.listdir(path) if (os.path.isfile(os.path.join(path, f)) and os.path.splitext(f)[1] == ".png")]
+    return files
 
 class Window(tk.Tk):
     def __init__(self):
@@ -32,7 +40,9 @@ class Window(tk.Tk):
         self.main = tk.PanedWindow(self, background="#141415")
         self.left_pane = tk.PanedWindow(self.main, background="#252526", width=300)
         self.right_pane = tk.PanedWindow(self.main, background="#1e1e1e", width=800)
-        list_box_img_choices = ["1", "2", "3", "banana"]
+
+        list_box_img_choices = get_img_files_from_dir(os.curdir+"/input")
+        print(os.curdir)
         list_box_img_choices_var = tk.StringVar(value=list_box_img_choices)
         self.list_box_img = tk.Listbox(self.main, listvariable=list_box_img_choices_var,
                                         background="#252526", width=300, height=10, foreground="#ffffff",
