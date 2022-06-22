@@ -6,10 +6,10 @@ from turtle import bgcolor, left
 class Window(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.themed_style = ttkthemes.ThemedStyle(self)
-        self.selected_theme = tk.StringVar()
+        #self.themed_style = ttkthemes.ThemedStyle(self)
+        #self.selected_theme = tk.StringVar()
 
-        themed_styles_list = self.themed_style.theme_names()
+        #themed_styles_list = self.themed_style.theme_names()
 
         min_width  = "600"
         min_height = "540"
@@ -17,27 +17,35 @@ class Window(tk.Tk):
         max_height = "1080"
 
         self.title("gba_img_manager")
-        self.geometry('1800x900+30+10')
+        self.geometry('1800x900+60+10')
         self.resizable(True, True)
         self.minsize(min_width, min_height)
         self.maxsize(max_width, max_height)
 
-        self.themed_style.set_theme("black")
+        #self.themed_style.set_theme("black")
         self.attributes('-alpha', 1)
-        self.attributes('-topmost', 1)
+        #self.attributes('-topmost', 1)
 
         # TODO remove height and width later when widgets added
-        self.toolbar = tk.Frame(self, background="#d5e8d4", height=80)
-        self.statusbar = tk.Frame(self, background="#e3e3e3", height=40)
-        self.main = tk.PanedWindow(self, background="#99fb99")
-        self.left_pane = tk.Frame(self.main, background="#99ceff", width=400)
-        self.right_pane = tk.PanedWindow(self.main, background="#99fb99", width=800)
+        self.toolbar = tk.Frame(self, background="#3c3c3c", height=35)
+        self.statusbar = tk.Frame(self, background="#007acc", height=30)
+        self.main = tk.PanedWindow(self, background="#141415")
+        self.left_pane = tk.PanedWindow(self.main, background="#252526", width=300)
+        self.right_pane = tk.PanedWindow(self.main, background="#1e1e1e", width=800)
+        list_box_img_choices = ["1", "2", "3", "banana"]
+        list_box_img_choices_var = tk.StringVar(value=list_box_img_choices)
+        self.list_box_img = tk.Listbox(self.main, listvariable=list_box_img_choices_var,
+                                        background="#252526", width=300, height=10, foreground="#ffffff",
+                                        font={"myFont":"Helvetica", "size":18, "weight":"bold"})
+        
 
-        self.toolbar.pack(side="top", fill="x")
-        self.statusbar.pack(side="bottom", fill="x")
+        self.toolbar.pack(side="top", fill="x", padx=0, pady=0)
+        self.statusbar.pack(side="bottom", fill="x", padx=0, pady=0)
         self.main.pack(side="top", fill="both", expand=True)
         self.main.add(self.left_pane)
         self.main.add(self.right_pane)
+        self.left_pane.add(self.list_box_img)
+
 
     def create_frame(self, grid_pos) -> ttk.Frame:
         frame = ttk.Frame(self, name="presentacion", padding=10)
