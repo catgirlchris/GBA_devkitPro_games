@@ -1,6 +1,7 @@
 import numpy as np
 from PIL import Image
 
+
 if __name__ == '__main__':
     img = Image.open('pueblo16_scaled_down.png')
     img_np = np.array(img)

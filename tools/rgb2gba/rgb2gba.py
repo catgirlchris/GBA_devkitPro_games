@@ -4,9 +4,6 @@ import sys
 from sys import stdin
 from PIL import ImageColor
 
-def clear():
-    os.system('clear')
-
 def rgb15(r, g, b) -> str:
     '''Convert (r,g,b) to 15 bits hexadecimal string for GBA palette purposes.
     
@@ -37,7 +34,7 @@ def parse(f, n_colors, int_tuples) -> int:
     return n_colors
 
 def print_c_format(n_colors, int_tuples) -> int:
-    '''Prints the values contained in int_tuples in C source, including the variables; returns n_colors so it's not lost.'''
+    '''Prints the va lues contained in int_tuples in C source, including the variables; returns n_colors so it's not lost.'''
     print('#define brinPalLen', n_colors*2)
     print('const unsigned short brinPal[', n_colors, '] = {')
     coma = ','
