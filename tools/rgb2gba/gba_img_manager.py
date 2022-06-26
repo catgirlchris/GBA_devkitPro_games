@@ -1,8 +1,10 @@
 from genericpath import isfile
 import tkinter as tk
-from tkinter import HORIZONTAL, VERTICAL, font, filedialog
+from tkinter import HORIZONTAL, LEFT, VERTICAL, Y, font, filedialog, messagebox
+
 import tkinter.ttk as ttk
 import ttkthemes
+from PIL import ImageTk, Image
 from turtle import bgcolor, left
 import os
 
@@ -35,26 +37,40 @@ class FolderlistPane(tk.PanedWindow):
         self.folders_listbox = MyListbox(self, listvariable=self.folders_var,
                                     background="#252526", width=300, height=10, foreground="#ffffff")
         self.top_bar = tk.PanedWindow(self, background="#252526", width=20, height=20, orient=HORIZONTAL)
-        self.add_folder_button = tk.Button(self, text="add folder", width=10, command=self.add_folder_to_list)
+        self.add_folder_button = tk.Button(self, text="add folder", width=10, command=self.add_folder_ask)
         self.top_bar.add(self.add_folder_button)
         
         self.add(self.top_bar)
         self.add(self.folders_listbox)
     
-    def add_folder_to_list(self):
-        folder = filedialog.askdirectory()
+    def add_folder(self, folder):
         self.folders.append(folder)
         self.folders_var.set(self.folders)
 
+    def add_folder_ask(self):
+        folder = filedialog.askdirectory()
+        self.add_folder(folder)
+
+    def bind_select_event(self, sequence : str, func):
+        self.folders_listbox.bind(sequence, func)
+
+def folderlist_select_event(event, *args, **kwargs):
+    img_pane : ImagelistPane = args[0]
+    dir_pane : FolderlistPane = kwargs['opt1']
+
+    selected_folder_idx = dir_pane.folders_listbox.curselection()[0]
+    selected_folder = dir_pane.folders_listbox.get(selected_folder_idx)
+
+    img_pane.change_imagelist_folder(selected_folder)
 
 class ImagelistPane(tk.PanedWindow):
     def __init__(self, master, **kw):
         tk.PanedWindow.__init__(self, master, **kw)
         self.top_bar = tk.PanedWindow(self, background="#252526", width=20, height=20, orient=HORIZONTAL)
-        self.add_folder_button = tk.Button(self, text="add folder")
-        self.top_bar.add(self.add_folder_button)
+        self.useless_button = tk.Button(self, text="useless button")
+        self.top_bar.add(self.useless_button)
         
-        self.images = get_img_files_from_dir(os.curdir+"/input")
+        self.images = list()
         self.images_var = tk.StringVar(value=self.images)
         self.image_listbox = MyListbox(self, listvariable=self.images_var,
                                     background="#252526", width=300, height=10, foreground="#ffffff")
@@ -65,69 +81,97 @@ class ImagelistPane(tk.PanedWindow):
     def change_imagelist_folder(self, folder_path : str):
         self.images = get_img_files_from_dir(folder_path)
         self.images_var.set(self.images)
-        
-def folderlist_select_event(event, *args, **kwargs):
-    print(event)
-    print(args)
-    print(kwargs['opt1'])
-    img_pane : ImagelistPane = args[0]
-    dir_pane : FolderlistPane = kwargs['opt1']
-    selected_folder_idx = dir_pane.folders_listbox.curselection()[0]
-    print(selected_folder_idx)
-    print(dir_pane.folders_listbox.get(selected_folder_idx))
-    selected_folder = dir_pane.folders_listbox.get(selected_folder_idx)
-    print(selected_folder)
-    img_pane.change_imagelist_folder(selected_folder)
-    
 
 class SidebarPane(tk.PanedWindow):
     def __init__(self, master, **kw):
         tk.PanedWindow.__init__(self, master, **kw)
         self.imagelist_pane = ImagelistPane(master, background='#252526', width=200, orient=VERTICAL)
         self.folderlist_pane = FolderlistPane(master, background='#252526', width=250, orient=VERTICAL)
-        self.folderlist_pane.folders_listbox.bind('<<ListboxSelect>>', 
+        self.folderlist_pane.bind_select_event('<<ListboxSelect>>', 
             lambda event, arg=self.imagelist_pane, kw=self.folderlist_pane : folderlist_select_event(event, arg, opt1=kw))
-        #listbox.bind("<<ListboxSelect>>", callback)
 
         self.add(self.folderlist_pane)
         self.add(self.imagelist_pane)
 
+    def add_folder(self, folder):
+        self.folderlist_pane.add_folder(folder)
+        
+
+class ImageEditPane(tk.PanedWindow):
+    class ImageView(tk.PanedWindow):
+        def __init__(self, master, **kw):
+            tk.PanedWindow.__init__(self, master, kw)
+            #self.pack(expand=False)
+            self.image = ImageTk.PhotoImage(Image.open('input/pueblecito_1.png'))
+            self.label = tk.Label(self, width=100, height=100)
+            self.label['image'] = self.image
+            self.add(self.label)
+            self.label.pack(side='top')
+
+            self.label2 = tk.Label(self, borderwidth=50, width=50, height=50)
+            self.label2['image'] = self.image
+            self.add(self.label2)
+            self.label2.pack(side='top')
+
+    def __init__(self, master, **kw):
+        tk.PanedWindow.__init__(self, master, kw)
+        self.image_pane = self.ImageView(self, background="#112211", width=300, height=300, orient=VERTICAL)
+        self.add(self.image_pane)
+        self.image_pane.pack(expand=False, side=LEFT, fill=Y)
+
+        self.image_pane_2 = self.ImageView(self, background="#330000", width=300, height=300, orient=VERTICAL)
+        self.add(self.image_pane_2)
+        self.image_pane_2.pack(expand=False, side=LEFT, fill=Y)
+
 class MainPane(tk.PanedWindow):
     def __init__(self, master, **kw):
         tk.PanedWindow.__init__(self, master, **kw)
+        self.sidebar    = SidebarPane(master, background="#252526", width=300, orient=VERTICAL)
+        self.image_edit = ImageEditPane(master, background="#252526", width=800, orient=HORIZONTAL)
+        self.add(self.sidebar)
+        self.add(self.image_edit)
         
 
 class Window(tk.Tk):
     def __init__(self):
         super().__init__()
-        min_width  = "600"
-        min_height = "540"
-        max_width = "1920"
-        max_height = "1080"
 
         self.title("gba_img_manager")
         self.geometry('1800x900+60+10')
         self.resizable(True, True)
-        self.minsize(min_width, min_height)
-        self.maxsize(max_width, max_height)
+        self.set_window_min_max_size('600', '540', '1920', '1080')
 
         self.font_default = font.Font(family='Console mono', name='appHighlightFont', size=14, weight='normal')
         self.attributes('-alpha', 1)
-        #self.attributes('-topmost', 1)
 
         # TODO remove height and width later when widgets added
         self.toolbar    = tk.Frame(self, background="#3c3c3c", height=35)
         self.statusbar  = tk.Frame(self, background="#007acc", height=30)
         self.main       = MainPane(self, background="#141415")
-        self.sidebar    = SidebarPane(self.main, background="#252526", width=300, orient=VERTICAL)
-        self.image_edit = tk.PanedWindow(self.main, background="#1e1e1e", width=800)
 
         self.toolbar.pack(side="top", fill="x", padx=0, pady=0)
         self.statusbar.pack(side="bottom", fill="x", padx=0, pady=0)
         self.main.pack(side="top", fill="both", expand=True)
-        self.main.add(self.sidebar)
-        self.main.add(self.image_edit)
+    
+        self.ask_initial_folder()
 
+    def set_window_min_max_size(self, min_width, min_height, max_width, max_height):
+        self.min_width  = min_width
+        self.min_height = min_height
+        self.max_width  = max_width
+        self.max_height = max_height
+        self.minsize(min_width, min_height)
+        self.maxsize(max_width, max_height)
+
+    def ask_folder(self, title) -> str:
+        #messagebox.showinfo(message='Please select an initial folder')
+        folder = filedialog.askdirectory(title=title)
+        return folder
+
+    def ask_initial_folder(self):
+        initial_folder = self.ask_folder('Choose a folder')
+        if initial_folder:
+            self.main.sidebar.add_folder(initial_folder)
 
 '''    def create_frame(self, grid_pos) -> ttk.Frame:
         frame = ttk.Frame(self, name="presentacion", padding=10)
