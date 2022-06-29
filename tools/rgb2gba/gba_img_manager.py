@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import HORIZONTAL, LEFT, VERTICAL, Y, font, filedialog, messagebox
 
 import tkinter.ttk as ttk
+from pygments import highlight
 import ttkthemes
 from PIL import ImageTk, Image
 from turtle import bgcolor, left
@@ -28,6 +29,39 @@ class MyListbox(tk.Listbox):
     def __init__(self, master, **kw):
         tk.Listbox.__init__(self, master=master, **kw)
 
+class ImageEditPane(tk.PanedWindow):
+    class ImageView(tk.PanedWindow):
+        def __init__(self, master, **kw):
+            tk.PanedWindow.__init__(self, master, kw)
+            #self.pack(expand=False)
+            self.image = ImageTk.PhotoImage(Image.open('input/pueblecito_1.png'))
+            self.label = tk.Label(self, width=100, height=100)
+            self.label['image'] = self.image
+            self.add(self.label)
+            self.label.pack(side='top')
+
+            self.label2 = tk.Label(self, borderwidth=50, width=50, height=50)
+            self.label2['image'] = self.image
+            self.add(self.label2)
+            self.label2.pack(side='top')
+        def change_image(self, image : str):
+            self.image = self.image = ImageTk.PhotoImage(Image.open(image))
+            self.label['image'] = self.image
+            self.add(self.label)
+
+    def __init__(self, master, **kw):
+        tk.PanedWindow.__init__(self, master, kw)
+        self.image_pane = self.ImageView(self, background="#112211", width=300, height=300, orient=VERTICAL)
+        self.add(self.image_pane)
+        self.image_pane.pack(expand=False, side=LEFT, fill=Y)
+        #self.pack_propagate(False)
+
+        self.image_pane_2 = self.ImageView(self, background="#330000", width=300, height=300, orient=VERTICAL)
+        self.add(self.image_pane_2)
+        self.image_pane_2.pack(expand=False, side=LEFT, fill=Y)
+
+    def change_image(self, image : str):
+        self.image_pane.change_image(image)
 
 class FolderlistPane(tk.PanedWindow):
     def __init__(self, master, **kw):
@@ -35,10 +69,19 @@ class FolderlistPane(tk.PanedWindow):
         self.folders = list()
         self.folders_var = tk.StringVar(value=self.folders)
         self.folders_listbox = MyListbox(self, listvariable=self.folders_var,
-                                    background="#252526", width=300, height=10, foreground="#ffffff")
+                                    background="#252526", width=300, height=10,
+                                    foreground="#ffffff", exportselection=False)
         self.top_bar = tk.PanedWindow(self, background="#252526", width=20, height=20, orient=HORIZONTAL)
-        self.add_folder_button = tk.Button(self, text="add folder", width=10, command=self.add_folder_ask)
+        self.add_folder_button_img = ImageTk.PhotoImage(Image.open('images/add_folder_button.png'))
+        self.add_folder_button = tk.Button(
+                    self.top_bar,
+                    command=self.add_folder_ask,
+                    image = self.add_folder_button_img,
+                    background="#252526",
+                    border=0,
+                    cursor='hand2')
         self.top_bar.add(self.add_folder_button)
+        self.add_folder_button.pack(side='right')
         
         self.add(self.top_bar)
         self.add(self.folders_listbox)
@@ -55,32 +98,48 @@ class FolderlistPane(tk.PanedWindow):
         self.folders_listbox.bind(sequence, func)
 
 def folderlist_select_event(event, *args, **kwargs):
+    '''Callback function used when <<ListboxSelect>> event is triggered on folderlistPane.'''
     img_pane : ImagelistPane = args[0]
     dir_pane : FolderlistPane = kwargs['opt1']
-
+    print('args', args)
+    print('kwargs', kwargs)
+    # TODO posible error aqui
     selected_folder_idx = dir_pane.folders_listbox.curselection()[0]
-    selected_folder = dir_pane.folders_listbox.get(selected_folder_idx)
+    print('selected_folder_idx', selected_folder_idx)
+    selected_folder = dir_pane.folders_listbox.get(str(selected_folder_idx))
 
     img_pane.change_imagelist_folder(selected_folder)
+
+def imagelist_select_event(event, *args, **kwargs):
+    '''Callback function used when <<ListboxSelect>> event is triggered on imagelist.'''
+    imagelist_pane : ImagelistPane = args[0]
+    image_edit_pane : ImageEditPane = kwargs['opt1']
+    selected_image_idx = imagelist_pane.image_listbox.curselection()[0]
+    selected_image = imagelist_pane.image_listbox.get(str(selected_image_idx))
+    folder_path = imagelist_pane.folder_path
+    print(folder_path+'/'+selected_image)
+    image_edit_pane.change_image(folder_path+'/'+selected_image)
 
 class ImagelistPane(tk.PanedWindow):
     def __init__(self, master, **kw):
         tk.PanedWindow.__init__(self, master, **kw)
-        self.top_bar = tk.PanedWindow(self, background="#252526", width=20, height=20, orient=HORIZONTAL)
-        self.useless_button = tk.Button(self, text="useless button")
-        self.top_bar.add(self.useless_button)
-        
+        self.folder_path = None
         self.images = list()
         self.images_var = tk.StringVar(value=self.images)
         self.image_listbox = MyListbox(self, listvariable=self.images_var,
-                                    background="#252526", width=300, height=10, foreground="#ffffff")
-        
-        self.add(self.top_bar)
+                                    background="#252526", width=300, height=10, foreground="#ffffff",
+                                    highlightbackground="#252526", exportselection=False)
         self.add(self.image_listbox)
 
     def change_imagelist_folder(self, folder_path : str):
-        self.images = get_img_files_from_dir(folder_path)
+        self.folder_path = folder_path
+        self.images = get_img_files_from_dir(self.folder_path)
         self.images_var.set(self.images)
+    def bind_select_image_event(self, image_edit_pane:ImageEditPane):
+        self.image_listbox.bind(
+            '<<ListboxSelect>>',
+            lambda event, arg=self, kw=image_edit_pane : imagelist_select_event(event, arg, opt1=kw)
+        )
 
 class SidebarPane(tk.PanedWindow):
     def __init__(self, master, **kw):
@@ -95,41 +154,21 @@ class SidebarPane(tk.PanedWindow):
 
     def add_folder(self, folder):
         self.folderlist_pane.add_folder(folder)
-        
 
-class ImageEditPane(tk.PanedWindow):
-    class ImageView(tk.PanedWindow):
-        def __init__(self, master, **kw):
-            tk.PanedWindow.__init__(self, master, kw)
-            #self.pack(expand=False)
-            self.image = ImageTk.PhotoImage(Image.open('input/pueblecito_1.png'))
-            self.label = tk.Label(self, width=100, height=100)
-            self.label['image'] = self.image
-            self.add(self.label)
-            self.label.pack(side='top')
-
-            self.label2 = tk.Label(self, borderwidth=50, width=50, height=50)
-            self.label2['image'] = self.image
-            self.add(self.label2)
-            self.label2.pack(side='top')
-
-    def __init__(self, master, **kw):
-        tk.PanedWindow.__init__(self, master, kw)
-        self.image_pane = self.ImageView(self, background="#112211", width=300, height=300, orient=VERTICAL)
-        self.add(self.image_pane)
-        self.image_pane.pack(expand=False, side=LEFT, fill=Y)
-
-        self.image_pane_2 = self.ImageView(self, background="#330000", width=300, height=300, orient=VERTICAL)
-        self.add(self.image_pane_2)
-        self.image_pane_2.pack(expand=False, side=LEFT, fill=Y)
+    def bind_select_image_event(self, image_edit_pane:ImageEditPane):
+        self.imagelist_pane.bind_select_image_event(image_edit_pane)
 
 class MainPane(tk.PanedWindow):
     def __init__(self, master, **kw):
         tk.PanedWindow.__init__(self, master, **kw)
         self.sidebar    = SidebarPane(master, background="#252526", width=300, orient=VERTICAL)
         self.image_edit = ImageEditPane(master, background="#252526", width=800, orient=HORIZONTAL)
+        self.sidebar.bind_select_image_event(self.image_edit)
         self.add(self.sidebar)
         self.add(self.image_edit)
+
+    def bind_select_image_event(self, image_edit_pane:ImageEditPane):
+        self.sidebar.bind_select_image_event(image_edit_pane)
         
 
 class Window(tk.Tk):
