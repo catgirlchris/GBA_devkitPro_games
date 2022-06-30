@@ -1,6 +1,7 @@
 from genericpath import isfile
+from multiprocessing import Event
 import tkinter as tk
-from tkinter import HORIZONTAL, LEFT, VERTICAL, Y, font, filedialog, messagebox
+from tkinter import HORIZONTAL, LEFT, RIGHT, VERTICAL, Y, font, filedialog, messagebox
 
 import tkinter.ttk as ttk
 from pygments import highlight
@@ -34,20 +35,18 @@ class ImageEditPane(tk.PanedWindow):
         def __init__(self, master, **kw):
             tk.PanedWindow.__init__(self, master, kw)
             #self.pack(expand=False)
+            self.label_frame = tk.LabelFrame(self, text="image", labelanchor='s', foreground="#ffffff",background="#112211")
             self.image = ImageTk.PhotoImage(Image.open('input/pueblecito_1.png'))
-            self.label = tk.Label(self, width=100, height=100)
+            self.label = tk.Label(self.label_frame, width=480, height=320, background="#112211")
             self.label['image'] = self.image
-            self.add(self.label)
-            self.label.pack(side='top')
-
-            self.label2 = tk.Label(self, borderwidth=50, width=50, height=50)
-            self.label2['image'] = self.image
-            self.add(self.label2)
-            self.label2.pack(side='top')
+            #self.label_frame.
+            self.add(self.label_frame)
+            self.label_frame.pack(expand=False, ipadx=1, ipady=1)
+            self.label.pack()
         def change_image(self, image : str):
             self.image = self.image = ImageTk.PhotoImage(Image.open(image))
             self.label['image'] = self.image
-            self.add(self.label)
+            self.label.configure(image=self.image)
 
     def __init__(self, master, **kw):
         tk.PanedWindow.__init__(self, master, kw)
@@ -58,7 +57,7 @@ class ImageEditPane(tk.PanedWindow):
 
         self.image_pane_2 = self.ImageView(self, background="#330000", width=300, height=300, orient=VERTICAL)
         self.add(self.image_pane_2)
-        self.image_pane_2.pack(expand=False, side=LEFT, fill=Y)
+        self.image_pane_2.pack(expand=False, side=RIGHT, fill=Y)
 
     def change_image(self, image : str):
         self.image_pane.change_image(image)
@@ -117,7 +116,6 @@ def imagelist_select_event(event, *args, **kwargs):
     selected_image_idx = imagelist_pane.image_listbox.curselection()[0]
     selected_image = imagelist_pane.image_listbox.get(str(selected_image_idx))
     folder_path = imagelist_pane.folder_path
-    print(folder_path+'/'+selected_image)
     image_edit_pane.change_image(folder_path+'/'+selected_image)
 
 class ImagelistPane(tk.PanedWindow):
@@ -185,14 +183,35 @@ class Window(tk.Tk):
 
         # TODO remove height and width later when widgets added
         self.toolbar    = tk.Frame(self, background="#3c3c3c", height=35)
+        self.play_button_image = ImageTk.PhotoImage(Image.open('images/play_button.png'))
+
+        ### Play Button TODO move to a class ###
+        self.play_button = tk.Button(self.toolbar, border=0, background="#3c3c3c",
+                                    image=self.play_button_image,
+                                    command=self.play_button_event, cursor='hand2')
+        def on_enter(e:tk.Event):
+            self.play_button_image = ImageTk.PhotoImage(Image.open('images/play_button_highlight.png'))
+            e.widget['image'] = self.play_button_image
+        def on_leave(e:tk.Event):
+            self.play_button_image = ImageTk.PhotoImage(Image.open('images/play_button.png'))
+            e.widget['image'] = self.play_button_image
+        self.play_button.bind('<Enter>', on_enter)
+        self.play_button.bind('<Leave>', on_leave)
+        ###              ---                 ###
+
+        self.play_button.pack(side='right', expand=False)
         self.statusbar  = tk.Frame(self, background="#007acc", height=30)
         self.main       = MainPane(self, background="#141415")
 
         self.toolbar.pack(side="top", fill="x", padx=0, pady=0)
         self.statusbar.pack(side="bottom", fill="x", padx=0, pady=0)
         self.main.pack(side="top", fill="both", expand=True)
+        #self.wm_attributes('-type', 'splash')
     
         self.ask_initial_folder()
+    
+    def play_button_event(self, event):
+        pass
 
     def set_window_min_max_size(self, min_width, min_height, max_width, max_height):
         self.min_width  = min_width
