@@ -1,0 +1,35 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build-gba",
+            "type": "shell",
+            "command": "make",
+            "group": {
+                "kind": "build",
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "run-gba-on-vba",
+            "type": "shell",
+            "command": "cmd.exe /c VisualBoyAdvance *.gba",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+        },
+        {
+            "label": "build-and-run-gba",
+            "type": "shell",
+            "dependsOrder": "sequence",
+            "dependsOn": ["build-gba", "run-gba-on-vba"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+        }
+    ]
+}
