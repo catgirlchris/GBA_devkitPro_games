@@ -47,6 +47,9 @@
 		{
 			"name": "010_windows_y_linux_integrados",
 			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/010_windows_y_linux_integrados"
+		},
+		{
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/gba-examples"
 		}
 	],
 	"remoteAuthority": "wsl+Mint"
