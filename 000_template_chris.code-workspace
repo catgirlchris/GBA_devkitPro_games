@@ -1,0 +1,53 @@
+{
+	"folders": [
+		{
+			"name": "000_template_chris",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/000_template_chris"
+		},
+		{
+			"name": "000_template_tutorial",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/000_template_tutorial"
+		},
+		{
+			"name": "001_hello_pixel",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/001_hello_pixel"
+		},
+		{
+			"name": "002_moving_square",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/002_moving_square"
+		},
+		{
+			"name": "003_hello_pong",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/003_hello_pong"
+		},
+		{
+			"name": "004_hello_pong_input",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/004_hello_pong_input"
+		},
+		{
+			"name": "005_hello_pong_interrupts",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/005_hello_pong_interrupts"
+		},
+		{
+			"name": "006_sprites",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/006_sprites"
+		},
+		{
+			"name": "007_sprites_tonc",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/007_sprites_tonc"
+		},
+		{
+			"name": "008_background_example",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/008_background_example"
+		},
+		{
+			"name": "009_image_integration",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/009_image_integration"
+		},
+		{
+			"name": "010_windows_y_linux_integrados",
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/010_windows_y_linux_integrados"
+		}
+	],
+	"remoteAuthority": "wsl+Mint"
+}
