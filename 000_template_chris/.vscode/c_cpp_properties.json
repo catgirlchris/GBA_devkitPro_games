@@ -1,0 +1,16 @@
+{
+    "configurations": [
+        {
+            "name": "GBA",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "/opt/devkitpro/libgba/include",
+                "/opt/devkitpro/libtonc/include"
+            ],
+            "defines": [],
+            "compilerPath": "/opt/devkitpro/devkitARM/bin/arm-none-eabi-gcc",
+            "intelliSenseMode": "macos-gcc-arm"
+        }
+    ],
+    "version": 4
+}
