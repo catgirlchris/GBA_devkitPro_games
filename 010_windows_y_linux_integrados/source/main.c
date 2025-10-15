@@ -14,7 +14,7 @@
 //   Note: tabs == 4 on my setup
 //
 // --------------------------------------------------------------------
-
+#include <gba_console.h>
 #include <gba_base.h>
 #include <gba_video.h>
 #include <gba_systemcalls.h>

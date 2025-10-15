@@ -2,11 +2,39 @@
 // all_gfx.h
 //
 -e // One header to rule them and in the darkness bind them
--e // Date: 2022-03-08 18:18:34
+-e // Date: 2023-02-13 09:12:50 PM
 
 -e #ifdef __cplusplus
 extern "C" {
 #endif
+
+//{{BLOCK(dlgbox)
+
+//======================================================================
+//
+//	dlgbox, 240x32@4, 
+//	+ palette 16 entries, not compressed
+//	+ 120 tiles not compressed
+//	Total size: 32 + 3840 = 3872
+//
+//	Time-stamp: 2023-02-13, 21:12:49
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
+//	( http://www.coranac.com/projects/#grit )
+//
+//======================================================================
+
+#ifndef GRIT_DLGBOX_H
+#define GRIT_DLGBOX_H
+
+#define dlgboxTilesLen 3840
+extern const unsigned int dlgboxTiles[960];
+
+#define dlgboxPalLen 32
+extern const unsigned short dlgboxPal[16];
+
+#endif // GRIT_DLGBOX_H
+
+//}}BLOCK(dlgbox)
 
 //{{BLOCK(dungeon01)
 
@@ -18,8 +46,8 @@ extern "C" {
 //	+ regular map (in SBBs), lz77 compressed, 64x64 
 //	Total size: 268 + 2852 + 2008 = 5128
 //
-//	Time-stamp: 2022-03-08, 18:18:34
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
+//	Time-stamp: 2023-02-13, 21:12:50
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
@@ -49,8 +77,8 @@ extern const unsigned short dungeon01Pal[134];
 //	+ bitmap rle compressed
 //	Total size: 512 + 2784 = 3296
 //
-//	Time-stamp: 2022-03-08, 18:18:34
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
+//	Time-stamp: 2023-02-13, 21:12:50
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
@@ -67,34 +95,6 @@ extern const unsigned short menu_gfxPal[256];
 #endif // GRIT_MENU_GFX_H
 
 //}}BLOCK(menu_gfx)
-
-//{{BLOCK(dlgbox)
-
-//======================================================================
-//
-//	dlgbox, 240x32@4, 
-//	+ palette 16 entries, not compressed
-//	+ 120 tiles not compressed
-//	Total size: 32 + 3840 = 3872
-//
-//	Time-stamp: 2022-03-08, 18:18:34
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
-//	( http://www.coranac.com/projects/#grit )
-//
-//======================================================================
-
-#ifndef GRIT_DLGBOX_H
-#define GRIT_DLGBOX_H
-
-#define dlgboxTilesLen 3840
-extern const unsigned int dlgboxTiles[960];
-
-#define dlgboxPalLen 32
-extern const unsigned short dlgboxPal[16];
-
-#endif // GRIT_DLGBOX_H
-
-//}}BLOCK(dlgbox)
 -e 
 #ifdef __cplusplus
 };

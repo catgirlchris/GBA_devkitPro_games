@@ -50,7 +50,19 @@
 		},
 		{
 			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/gba-examples"
+		},
+		{
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/libgba"
+		},
+		{
+			"uri": "vscode-remote://wsl+mint/mnt/d/proyectos/GBA_devkitPro/tonc"
 		}
 	],
-	"remoteAuthority": "wsl+Mint"
+	"remoteAuthority": "wsl+Mint",
+	"settings": {
+		"files.associations": {
+			"gba_console.h": "c",
+			"gba_base.h": "c"
+		}
+	}
 }

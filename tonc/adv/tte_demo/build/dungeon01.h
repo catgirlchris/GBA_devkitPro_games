@@ -9,8 +9,8 @@
 //	+ regular map (in SBBs), lz77 compressed, 64x64 
 //	Total size: 268 + 2852 + 2008 = 5128
 //
-//	Time-stamp: 2022-03-08, 18:18:34
-//	Exported by Cearn's GBA Image Transmogrifier, v0.8.16
+//	Time-stamp: 2023-02-13, 21:12:50
+//	Exported by Cearn's GBA Image Transmogrifier, v0.9.2
 //	( http://www.coranac.com/projects/#grit )
 //
 //======================================================================
