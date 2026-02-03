@@ -4,9 +4,12 @@
 
 #include <tonc_types.h>
 
+#define vid_mem         ((COLOR*)MEM_VRAM)
+
 #include "img/pueblecito_1.h"
 #include "img/pueblecito_1.c"
 #include "img/prueba.c"
+#include "img/title_screen.h"
 
 
 
@@ -163,11 +166,12 @@ void fill_background()
 
 int main()
 {
+	/*
     // Load palette
 	//memcpy(pal_bg_mem, pueblecito_1Pal, pueblecito_1PalLen);
 	memcpy(pal_bg_mem, pueblecito_1_pal, pueblecito_1_pal_len);
 	// Load tiles into CBB 0
-	memcpy(&tile_mem[0][0], pueblecito_1Tiles, pueblecito_1TilesLen);
+	//memcpy(&tile_mem[0][0], pueblecito_1Tiles, pueblecito_1TilesLen);
 	memcpy(&tile_mem[1][0], pueblecito_1_tiles, pueblecito_1_tiles_len);
 	// Load map into SBB 30
 	//memcpy(&se_mem[30][0], pueblecito_1Map, pueblecito_1MapLen);
@@ -179,6 +183,14 @@ int main()
 	//   using charblock 0 and screenblock 31
 	REG_BG0CNT= BG_CBB(1) | BG_SBB(30) | BG_8BPP | BG_REG_32x32;
 	REG_DISPCNT= DCNT_MODE0 | DCNT_BG0;
+	*/
+
+	// Configurar el modo de video a modo 3 (bitmap)
+    REG_DISPCNT = DCNT_MODE3 | DCNT_BG2;
+
+    // Copiar los datos del fondo al VRAM
+    memcpy(vid_mem, title_screen_data, title_screen_width * title_screen_height * 2);
+
 
     int a = 0;
 
